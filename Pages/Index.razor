@@ -1,0 +1,35 @@
+﻿@page "/"
+
+<EditForm Model="@Model" OnValidSubmit="@onValidSubmit">
+    <DataAnnotationsValidator/>
+    <SfRichTextEditor ShowCharCount="true" MaxLength="100" Placeholder="Type something..." @bind-Value="@Model.Description" />
+	<ValidationMessage For="@(()=> Model.Description)"/>
+    <SfButton type="reset" CssClass="e-primary" @onclick="Reset">Reset</SfButton>
+    <SfButton type="submit" CssClass="e-primary">Submit</SfButton>
+    <p style="background-color: aliceblue">@formValue</p>
+</EditForm>
+
+@code {
+    private string formValue { get; set; }
+
+    private class FormModel
+    {
+        [Required(ErrorMessage = "Please provide the description.")]
+        [MinLength(20, ErrorMessage = "Please enter at least 20 characters.")]
+        [MaxLength(100, ErrorMessage = "Please provide description within 100 characters.")]
+        public string Description { get; set; }
+    }
+
+    private FormModel Model = new FormModel();
+
+    private void onValidSubmit()
+    {
+        formValue = "Form Submitted";
+    }
+
+    private void Reset()
+    {
+        formValue = string.Empty;
+    }
+}
+
